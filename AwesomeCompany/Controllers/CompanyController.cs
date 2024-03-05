@@ -1,7 +1,9 @@
 using AwesomeCompany.Data;
 using AwesomeCompany.Entities;
+using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace AwesomeCompany.Controllers;
 
@@ -65,6 +67,37 @@ public class CompanyController(AppDbContext context) : ControllerBase
 
         // performing row sql query 
         await _context.Database.ExecuteSqlInterpolatedAsync($"UPDATE Employees SET Salary = Salary * 1.1 WHERE CompanyId = {companyDetails.Id}");
+
+        companyDetails.LastSalaryUpdateUtc = DateTime.UtcNow;
+
+        await _context.SaveChangesAsync();
+
+        // commit database transaction
+        await _context.Database.CommitTransactionAsync();
+
+        return NoContent();
+    }
+
+    [HttpPut]
+    [Route("increase-salaries-dapper/{companyId:int}")]
+    public async Task<IActionResult> UpdateSalariesDapper(int companyId)
+    {
+        var companyDetails = await _context.Set<Company>().Include(c => c.Employees).FirstOrDefaultAsync(c => c.Id == companyId);
+
+        if (companyDetails == null)
+        {
+            return NotFound();
+        }
+
+        // begin database transaction
+        var transaction = await _context.Database.BeginTransactionAsync();
+
+        // performing sql query using dapper
+        await _context.Database.GetDbConnection().ExecuteAsync(
+            "UPDATE Employees SET Salary = Salary * 1.1 WHERE CompanyId = @CompanyId",
+            new { CompanyId = companyDetails.Id },
+            transaction.GetDbTransaction()
+        );
 
         companyDetails.LastSalaryUpdateUtc = DateTime.UtcNow;
 
