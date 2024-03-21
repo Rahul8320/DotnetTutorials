@@ -1,6 +1,5 @@
 using EfCoreRelationShips.WebApi.Model.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreRelationShips.WebApi.Controllers;
 

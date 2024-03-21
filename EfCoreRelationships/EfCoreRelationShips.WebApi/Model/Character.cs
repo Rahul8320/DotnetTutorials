@@ -8,4 +8,5 @@ public class Character
     public string Name { get; set; } = default!;
     public Backpack Backpack { get; set; } = default!;
     public List<Weapon> Weapons { get; set; } = [];
+    public List<Faction> Factions { get; set; } = [];
 }
