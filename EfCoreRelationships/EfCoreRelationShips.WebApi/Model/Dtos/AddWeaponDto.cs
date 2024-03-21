@@ -1,7 +1,7 @@
 namespace EfCoreRelationShips.WebApi.Model.Dtos;
 
-public class AddBackpackDto
+public class AddWeaponDto
 {
-    public required string Description { get; set; }
+    public required string Name { get; set; }
     public required int CharacterId { get; set; }
 }

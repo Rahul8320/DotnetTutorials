@@ -1,55 +1,55 @@
+using EfCoreRelationShips.WebApi.Model;
 using EfCoreRelationShips.WebApi.Model.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreRelationShips.WebApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BackpackController(ApplicationDbContext context) : ControllerBase
+public class WeaponController(ApplicationDbContext context) : ControllerBase
 {
     private readonly ApplicationDbContext _context = context;
 
     [HttpGet]
-    public ActionResult<List<BackpackDto>> GetAll()
+    public ActionResult<List<WeaponDto>> GetAll()
     {
-        var allBackpacks = _context.Backpacks.Select(item => new BackpackDto() {
+        var allWeapons = _context.Weapons.Select(item => new WeaponDto(){
             Id = item.Id,
-            Description = item.Description,
+            Name = item.Name,
             CharacterId = item.Character.Id,
             CharacterName = item.Character.Name,
         }).ToList();
 
-        return Ok(allBackpacks);
+        return Ok(allWeapons);
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] AddBackpackDto model)
+    public IActionResult Create([FromBody] AddWeaponDto model)
     {
-        var backpack = new Backpack()
+        var weapon = new Weapon()
         {
-            Description = model.Description,
+            Name = model.Name,
             CharacterId = model.CharacterId,
         };
 
-        _context.Backpacks.Add(backpack);
+        _context.Weapons.Add(weapon);
         _context.SaveChanges();
 
-        return StatusCode(StatusCodes.Status201Created, backpack);
+        return StatusCode(StatusCodes.Status201Created, weapon);
     }
 
     [HttpDelete]
     [Route("{id:int}")]
     public IActionResult Delete([FromRoute] int id)
     {
-        var backpack = _context.Backpacks.FirstOrDefault(b => b.Id == id);
+        var weapon = _context.Weapons.FirstOrDefault(w => w.Id == id);
 
-        if(backpack is null)
+        if(weapon is null)
         {
             return NotFound();
         }
 
-        _context.Backpacks.Remove(backpack);
+        _context.Weapons.Remove(weapon);
         _context.SaveChanges();
 
         return NoContent();

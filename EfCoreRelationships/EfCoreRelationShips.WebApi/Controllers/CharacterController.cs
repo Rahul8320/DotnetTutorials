@@ -1,3 +1,4 @@
+using EfCoreRelationShips.WebApi.Model.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,13 +11,17 @@ public class CharacterController(ApplicationDbContext context) : ControllerBase
     private readonly ApplicationDbContext _context = context;
 
     [HttpGet]
-    public ActionResult<List<Character>> GetAll()
+    public ActionResult<List<CharacterDto>> GetAll()
     {
-        var allCharacters = _context.Characters.Select(item => new {
-            item.Id,
-            item.Name,
+        var allCharacters = _context.Characters.Select(item => new CharacterDto() {
+            Id = item.Id,
+            Name = item.Name,
             BackpackId = item.Backpack.Id,
             BackpackDescription = item.Backpack.Description,
+            CharacterWeapons = item.Weapons.Select(weapon => new CharacterWeaponDto(){
+                WeaponId = weapon.Id,
+                WeaponName = weapon.Name,
+            }).ToList()
         }).ToList();
 
         return Ok(allCharacters);
@@ -33,7 +38,7 @@ public class CharacterController(ApplicationDbContext context) : ControllerBase
         _context.Characters.Add(character);
         _context.SaveChanges();
 
-        return Created();
+        return StatusCode(StatusCodes.Status201Created, character);
     }
 
     [HttpDelete]
@@ -50,6 +55,6 @@ public class CharacterController(ApplicationDbContext context) : ControllerBase
         _context.Remove(character);
         _context.SaveChanges();
 
-        return Ok();
+        return NoContent();
     }
 }
