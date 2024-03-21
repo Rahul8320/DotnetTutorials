@@ -13,7 +13,12 @@ public class BackpackController(ApplicationDbContext context) : ControllerBase
     [HttpGet]
     public ActionResult<List<Backpack>> GetAll()
     {
-        var allBackpacks = _context.Backpacks.Include(b => b.Character).ToList();
+        var allBackpacks = _context.Backpacks.Select(item => new {
+            item.Id,
+            item.Description,
+            CharacterId = item.Character.Id,
+            CharacterName = item.Character.Name,
+        }).ToList();
 
         return Ok(allBackpacks);
     }

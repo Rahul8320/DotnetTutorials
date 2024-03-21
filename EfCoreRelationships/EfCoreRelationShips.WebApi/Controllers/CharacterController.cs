@@ -12,7 +12,12 @@ public class CharacterController(ApplicationDbContext context) : ControllerBase
     [HttpGet]
     public ActionResult<List<Character>> GetAll()
     {
-        var allCharacters = _context.Characters.Include(c => c.Backpack).ToList();
+        var allCharacters = _context.Characters.Select(item => new {
+            item.Id,
+            item.Name,
+            BackpackId = item.Backpack.Id,
+            BackpackDescription = item.Backpack.Description,
+        }).ToList();
 
         return Ok(allCharacters);
     }
