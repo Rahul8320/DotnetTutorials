@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EfCoreRelationShips.WebApi.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreRelationShips.WebApi;
 
@@ -6,4 +7,5 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
     public DbSet<Character> Characters { get; set; }
     public DbSet<Backpack> Backpacks { get; set; }
+    public DbSet<Weapon> Weapons { get; set; }
 }
