@@ -20,7 +20,11 @@ public class CharacterController(ApplicationDbContext context) : ControllerBase
             CharacterWeapons = item.Weapons.Select(weapon => new CharacterWeaponDto(){
                 WeaponId = weapon.Id,
                 WeaponName = weapon.Name,
-            }).ToList()
+            }).ToList(),
+            CharacterFactions = item.Factions.Select(fiction => new CharacterFactionDto(){
+                Id = fiction.Id,
+                Name = fiction.Name,
+            }).ToList(),
         }).ToList();
 
         return Ok(allCharacters);
