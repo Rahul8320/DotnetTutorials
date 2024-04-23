@@ -17,7 +17,7 @@ namespace FunctionApp.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
 
-            modelBuilder.Entity("DataContext.Book", b =>
+            modelBuilder.Entity("DataContext.Entities.Book", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

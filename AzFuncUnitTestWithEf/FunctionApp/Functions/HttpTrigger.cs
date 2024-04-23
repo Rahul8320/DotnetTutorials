@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace FunctionApp;
 
-public class HttpTrigger(ILogger<HttpTrigger> logger, BookDbContext bookDbContext)
+public class HttpTrigger(ILoggerFactory loggerFactory, BookDbContext bookDbContext)
 {
-    private readonly ILogger<HttpTrigger> _logger = logger;
+    private readonly ILogger<HttpTrigger> _logger = loggerFactory.CreateLogger<HttpTrigger>();
     private readonly BookDbContext _bookDbContext = bookDbContext;
 
     [Function("HttpTrigger")]
@@ -23,7 +23,7 @@ public class HttpTrigger(ILogger<HttpTrigger> logger, BookDbContext bookDbContex
 
             var book = await ParseInput(req);
 
-            _bookDbContext.Books.Add(Map(book));
+            _bookDbContext.Add(Map(book));
             await _bookDbContext.SaveChangesAsync();
 
             return new CreatedResult();
@@ -52,6 +52,7 @@ public class HttpTrigger(ILogger<HttpTrigger> logger, BookDbContext bookDbContex
 
     private Book Map(BookInput b)
     {
-        return new Book { Title = b.Title, Author = b.Author, PublishDate = b.PublishedDate };
+        var r = new Random();
+        return new Book { Id = r.Next(1, 999), Title = b.Title, Author = b.Author, PublishDate = b.PublishedDate };
     }
 }

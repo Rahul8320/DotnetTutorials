@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FunctionApp.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20240422150720_CreateBookDbContext")]
+    [Migration("20240423032514_CreateBookDbContext")]
     partial class CreateBookDbContext
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace FunctionApp.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
 
-            modelBuilder.Entity("DataContext.Book", b =>
+            modelBuilder.Entity("DataContext.Entities.Book", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
