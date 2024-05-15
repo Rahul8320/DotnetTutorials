@@ -1,0 +1,6 @@
+@HostAddress = http://localhost:5181/api
+
+### Get All
+GET {{HostAddress}}/fans
+Accept: application/json
+
