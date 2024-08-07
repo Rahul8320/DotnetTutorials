@@ -1,5 +1,6 @@
 ﻿using Gatherly.Domain.Entities;
 using Gatherly.Domain.Repositories;
+using Gatherly.Domain.Shared;
 using MediatR;
 
 namespace Gatherly.Application.Gatherings.Commands.CreateGathering;
@@ -29,7 +30,7 @@ internal sealed class CreateGatheringCommandHandler : IRequestHandler<CreateGath
             return Unit.Value;
         }
 
-        var gathering = Gathering.Create(
+        Result<Gathering> gatheringResult = Gathering.Create(
             Guid.NewGuid(),
             member,
             request.Type,
@@ -39,7 +40,13 @@ internal sealed class CreateGatheringCommandHandler : IRequestHandler<CreateGath
             request.MaximumNumberOfAttendees,
             request.InvitationsValidBeforeInHours);
 
-        _gatheringRepository.Add(gathering);
+        if (gatheringResult.IsFailure)
+        {
+            // log error
+            return Unit.Value;
+        }
+
+        _gatheringRepository.Add(gatheringResult.Value);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

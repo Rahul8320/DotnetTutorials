@@ -1,5 +1,7 @@
 ﻿using Gatherly.Domain.Enums;
+using Gatherly.Domain.Errors;
 using Gatherly.Domain.primitives;
+using Gatherly.Domain.Shared;
 
 namespace Gatherly.Domain.Entities;
 
@@ -43,7 +45,7 @@ public sealed class Gathering : Entity
 
     public IReadOnlyCollection<Invitation> Invitations => _invitations;
 
-    public static Gathering Create(
+    public static Result<Gathering> Create(
         Guid id,
         Member creator,
         GatheringType gatheringType,
@@ -68,8 +70,7 @@ public sealed class Gathering : Entity
             case GatheringType.WithFixedNumberOfAttendees:
                 if (maxNumberOfAttendees is null)
                 {
-                    throw new Exception(
-                        $"{nameof(maxNumberOfAttendees)} can't be null.");
+                    return Result.Failure<Gathering>(DomainErrors.Gathering.NullMaxNumberOfAttendees);
                 }
 
                 gathering.MaximumNumberOfAttendees = maxNumberOfAttendees;
@@ -77,8 +78,7 @@ public sealed class Gathering : Entity
             case GatheringType.WithExpirationForInvitations:
                 if (invitationsValidBeforeInHours is null)
                 {
-                    throw new Exception(
-                        $"{nameof(invitationsValidBeforeInHours)} can't be null.");
+                    return Result.Failure<Gathering>(DomainErrors.Gathering.NullInvitationExpiryTime);
                 }
 
                 gathering.InvitationsExpireAtUtc =
@@ -91,17 +91,17 @@ public sealed class Gathering : Entity
         return gathering;
     }
 
-    public Invitation SendInvitation(Member member)
+    public Result<Invitation> SendInvitation(Member member)
     {
         // Validate
         if (Creator.Id == member.Id)
         {
-            throw new Exception("Can't send invitation to the gathering creator.");
+            return Result.Failure<Invitation>(DomainErrors.Gathering.InvitingCreator);
         }
 
         if (ScheduledAtUtc < DateTime.UtcNow)
         {
-            throw new Exception("Can't send invitation for gathering in the past.");
+            return Result.Failure<Invitation>(DomainErrors.Gathering.AlreadyPassed);
         }
 
         // Create invitation
