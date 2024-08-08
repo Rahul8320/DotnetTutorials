@@ -2,7 +2,7 @@ namespace Gatherly.Domain.Shared;
 
 public class Result
 {
-    protected internal Result(bool isSuccess, Error error)
+    protected internal Result(bool isSuccess, Error error, List<Error>? errors = null)
     {
         if (isSuccess && error != Error.None)
         {
@@ -16,11 +16,13 @@ public class Result
 
         IsSuccess = isSuccess;
         Error = error;
+        Errors = errors ?? new();
     }
 
     public bool IsSuccess { get; }
     public bool IsFailure => !IsSuccess;
     public Error Error { get; }
+    public List<Error> Errors { get; }
 
     public static Result Success() => new(true, Error.None);
 
@@ -31,4 +33,6 @@ public class Result
     public static Result<TValue> Failure<TValue>(Error error) => new(default, false, error);
 
     public static Result<TValue> Create<TValue>(TValue? value) => value is not null ? Success(value) : Failure<TValue>(Error.NullValue);
+
+    public static Result<TValue> Failure<TValue>(List<Error> errors) => new(default, false, errors[0], errors);
 }
