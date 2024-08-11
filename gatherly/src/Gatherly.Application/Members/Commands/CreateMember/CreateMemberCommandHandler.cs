@@ -1,4 +1,5 @@
 using Gatherly.Domain.Entities;
+using Gatherly.Domain.Errors;
 using Gatherly.Domain.Repositories;
 using Gatherly.Domain.Shared;
 using Gatherly.Domain.ValueObjects;
@@ -21,7 +22,7 @@ public class CreateMemberCommandHandler : IRequestHandler<CreateMemberCommand, R
 
     public async Task<Result<Unit>> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
     {
-        var memberResult = ValidateAndCreateMember(request);
+        var memberResult = await ValidateAndCreateMember(request, cancellationToken);
 
         if (memberResult.IsFailure)
         {
@@ -36,26 +37,37 @@ public class CreateMemberCommandHandler : IRequestHandler<CreateMemberCommand, R
         return Unit.Value;
     }
 
-    private static Result<Member> ValidateAndCreateMember(CreateMemberCommand request)
+    private async Task<Result<Member>> ValidateAndCreateMember(CreateMemberCommand request, CancellationToken cancelToken)
     {
         List<Error> errors = new();
 
         var firstNameResult = FirstName.Create(request.FirstName);
         var lastNameResult = LastName.Create(request.LastName);
+        var emailResult = Email.Create(request.Email);
 
-        if (firstNameResult.IsFailure || lastNameResult.IsFailure)
+        if (firstNameResult.IsFailure || lastNameResult.IsFailure || emailResult.IsFailure)
         {
             errors.Add(firstNameResult.Error);
             errors.Add(lastNameResult.Error);
+            errors.Add(emailResult.Error);
 
             return Result.Failure<Member>(errors);
         }
 
-        var member = new Member(
+        var isUniqueEmail = await _memberRepository.IsEmailUnique(emailResult.Value, cancelToken);
+
+        if (isUniqueEmail == false)
+        {
+            errors.Add(ValidationErrors.Email.Register);
+
+            return Result.Failure<Member>(errors);
+        }
+
+        var member = Member.Create(
             Guid.NewGuid(),
             firstNameResult.Value,
             lastNameResult.Value,
-            request.Email
+            emailResult.Value
         );
 
         return member;

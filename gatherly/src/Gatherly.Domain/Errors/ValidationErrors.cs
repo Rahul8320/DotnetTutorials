@@ -26,4 +26,17 @@ public static class ValidationErrors
             "LastName.TooLong",
             $"Last name can not be more than {DomainConstants.LastNameMaxLength} character long.");
     }
+
+    public static class Email
+    {
+        public static readonly Error Empty = new(
+            "Email.Empty",
+            "Email can not be empty.");
+
+        public static readonly Error Register = new Error(
+            "Email.Register",
+            "Email already register."
+        );
+
+    }
 }
