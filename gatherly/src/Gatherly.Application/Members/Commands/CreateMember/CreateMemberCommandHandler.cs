@@ -1,3 +1,4 @@
+using Gatherly.Application.Abstractions.Messaging;
 using Gatherly.Domain.Entities;
 using Gatherly.Domain.Errors;
 using Gatherly.Domain.Repositories;
@@ -9,9 +10,9 @@ namespace Gatherly.Application.Members.Commands.CreateMember;
 
 public class CreateMemberCommandHandler(
     IMemberRepository memberRepository,
-    IUnitOfWork unitOfWork) : IRequestHandler<CreateMemberCommand, Result<Unit>>
+    IUnitOfWork unitOfWork) : ICommandHandler<CreateMemberCommand>
 {
-    public async Task<Result<Unit>> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
     {
         var memberResult = await ValidateAndCreateMember(request, cancellationToken);
 
@@ -25,7 +26,7 @@ public class CreateMemberCommandHandler(
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return Result.Success();
     }
 
     private async Task<Result<Member>> ValidateAndCreateMember(CreateMemberCommand request, CancellationToken cancelToken)
