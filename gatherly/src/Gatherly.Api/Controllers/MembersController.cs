@@ -20,7 +20,7 @@ public class MembersController(ISender sender) : ApiController(sender)
 
         var result = await Sender.Send(command, cancellationToken);
 
-        return result.IsSuccess ? Ok() : BadRequest(result.Errors);
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Errors);
     }
 
     [HttpGet]

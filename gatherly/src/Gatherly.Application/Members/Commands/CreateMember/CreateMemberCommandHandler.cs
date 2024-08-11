@@ -10,28 +10,28 @@ namespace Gatherly.Application.Members.Commands.CreateMember;
 
 public class CreateMemberCommandHandler(
     IMemberRepository memberRepository,
-    IUnitOfWork unitOfWork) : ICommandHandler<CreateMemberCommand>
+    IUnitOfWork unitOfWork) : ICommandHandler<CreateMemberCommand, Guid>
 {
-    public async Task<Result> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
     {
         var memberResult = await ValidateAndCreateMember(request, cancellationToken);
 
         if (memberResult.IsFailure)
         {
             // Log error
-            return Result.Failure<Unit>(memberResult.Errors);
+            return Result.Failure<Guid>(memberResult.Errors);
         }
 
         memberRepository.Add(memberResult.Value);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success();
+        return Result.Success(memberResult.Value.Id);
     }
 
     private async Task<Result<Member>> ValidateAndCreateMember(CreateMemberCommand request, CancellationToken cancelToken)
     {
-        List<Error> errors = new();
+        List<Error> errors = [];
 
         var firstNameResult = FirstName.Create(request.FirstName);
         var lastNameResult = LastName.Create(request.LastName);

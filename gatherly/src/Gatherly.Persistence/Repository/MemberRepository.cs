@@ -1,27 +1,31 @@
 using Gatherly.Domain.Entities;
 using Gatherly.Domain.Repositories;
 using Gatherly.Domain.ValueObjects;
+using Gatherly.Persistence.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gatherly.Persistence.Repository;
 
-public class MemberRepository : IMemberRepository
+public class MemberRepository(AppDbContext context) : IMemberRepository
 {
     public void Add(Member member)
     {
-
+        context.Members.Add(member);
+        return;
     }
 
     public async Task<Member?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        await Task.Delay(1, cancellationToken);
+        var member = await context.Members.FindAsync([id], cancellationToken);
 
-        return null;
+        return member;
     }
 
     public async Task<bool> IsEmailUnique(Email email, CancellationToken cancellationToken = default)
     {
-        await Task.Delay(1, cancellationToken);
+        var memberWithEmail = await context.Members.FirstOrDefaultAsync(
+            x => x.Email.Equals(email), cancellationToken);
 
-        return true;
+        return memberWithEmail is null;
     }
 }

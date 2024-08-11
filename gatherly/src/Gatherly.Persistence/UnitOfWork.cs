@@ -1,11 +1,13 @@
 using Gatherly.Domain.Repositories;
+using Gatherly.Persistence.Data;
 
 namespace Gatherly.Persistence;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork(AppDbContext context) : IUnitOfWork
 {
-    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        return Task.CompletedTask;
+        await context.SaveChangesAsync(cancellationToken);
+        return;
     }
 }
