@@ -7,19 +7,10 @@ using MediatR;
 
 namespace Gatherly.Application.Members.Commands.CreateMember;
 
-public class CreateMemberCommandHandler : IRequestHandler<CreateMemberCommand, Result<Unit>>
+public class CreateMemberCommandHandler(
+    IMemberRepository memberRepository,
+    IUnitOfWork unitOfWork) : IRequestHandler<CreateMemberCommand, Result<Unit>>
 {
-    private readonly IMemberRepository _memberRepository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CreateMemberCommandHandler(
-        IMemberRepository memberRepository,
-        IUnitOfWork unitOfWork)
-    {
-        _memberRepository = memberRepository;
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task<Result<Unit>> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
     {
         var memberResult = await ValidateAndCreateMember(request, cancellationToken);
@@ -30,9 +21,9 @@ public class CreateMemberCommandHandler : IRequestHandler<CreateMemberCommand, R
             return Result.Failure<Unit>(memberResult.Errors);
         }
 
-        _memberRepository.Add(memberResult.Value);
+        memberRepository.Add(memberResult.Value);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
     }
@@ -54,7 +45,7 @@ public class CreateMemberCommandHandler : IRequestHandler<CreateMemberCommand, R
             return Result.Failure<Member>(errors);
         }
 
-        var isUniqueEmail = await _memberRepository.IsEmailUnique(emailResult.Value, cancelToken);
+        var isUniqueEmail = await memberRepository.IsEmailUnique(emailResult.Value, cancelToken);
 
         if (isUniqueEmail == false)
         {

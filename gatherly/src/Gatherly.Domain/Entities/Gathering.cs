@@ -7,8 +7,8 @@ namespace Gatherly.Domain.Entities;
 
 public sealed class Gathering : AggregateRoot
 {
-    private readonly List<Invitation> _invitations = new();
-    private readonly List<Attendee> _attendees = new();
+    private readonly List<Invitation> _invitations = [];
+    private readonly List<Attendee> _attendees = [];
 
     private Gathering(
     Guid id,

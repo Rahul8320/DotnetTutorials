@@ -1,9 +1,6 @@
 
 namespace Gatherly.Domain.primitives;
 
-public abstract class AggregateRoot : Entity
+public abstract class AggregateRoot(Guid id) : Entity(id)
 {
-    protected AggregateRoot(Guid id) : base(id)
-    {
-    }
 }
