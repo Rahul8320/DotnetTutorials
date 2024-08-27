@@ -1,6 +1,9 @@
 **/obj/
 **/bin/
+**/.config/
+
 
 .vs
 .vscode
 */e-shop.db
+*/e-shop.db-*
