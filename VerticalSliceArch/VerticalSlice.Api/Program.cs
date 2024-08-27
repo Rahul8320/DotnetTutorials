@@ -1,7 +1,8 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using VerticalSlice.Api.Data;
 using VerticalSlice.Api.Endpoints;
-using VerticalSlice.Api.Products.Data;
+using VerticalSlice.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddDbContext<AppDbContext>(
     option => option.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 
 builder.Services.AddEndpoints();
+
+builder.Services.ServiceExtension();
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
