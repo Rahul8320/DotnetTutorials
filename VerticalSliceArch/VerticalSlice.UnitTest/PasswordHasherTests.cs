@@ -53,4 +53,50 @@ public class PasswordHasherTests
         // Assert
         hash1.Should().NotBe(hash2);
     }
+
+    [Fact]
+    public void Verify_ShouldReturnTrue_ForCorrectPassword()
+    {
+        // Arrange
+        var password = "password123";
+        var passwordHash = _passwordHasher.Hash(password);
+
+        // Act
+        var result = _passwordHasher.Verify(password, passwordHash);
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Verify_ShouldReturnFalse_ForIncorrectPassword()
+    {
+        // Arrange
+        var password = "password123";
+        var incorrectPassword = "wrongpassword";
+        var passwordHash = _passwordHasher.Hash(password);
+
+        // Act
+        var result = _passwordHasher.Verify(incorrectPassword, passwordHash);
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public void Verify_ShouldReturnFalse_ForCorruptedHash()
+    {
+        // Arrange
+        var password = "password123";
+        var passwordHash = _passwordHasher.Hash(password);
+
+        // Corrupt the hash by modifying the string
+        var corruptedHash = passwordHash.Replace('0', '1');
+
+        // Act
+        var result = _passwordHasher.Verify(password, corruptedHash);
+
+        // Assert
+        result.Should().BeFalse();
+    }
 }
