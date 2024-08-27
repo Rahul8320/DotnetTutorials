@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VerticalSlice.Api", "VerticalSlice.Api\VerticalSlice.Api.csproj", "{A17A254B-7167-4FCF-87D5-27640F64F917}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VerticalSlice.UnitTest", "VerticalSlice.UnitTest\VerticalSlice.UnitTest.csproj", "{ADE9E795-F546-42D4-B7F8-4BE1B7DFB181}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{A17A254B-7167-4FCF-87D5-27640F64F917}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A17A254B-7167-4FCF-87D5-27640F64F917}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A17A254B-7167-4FCF-87D5-27640F64F917}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADE9E795-F546-42D4-B7F8-4BE1B7DFB181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADE9E795-F546-42D4-B7F8-4BE1B7DFB181}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADE9E795-F546-42D4-B7F8-4BE1B7DFB181}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADE9E795-F546-42D4-B7F8-4BE1B7DFB181}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

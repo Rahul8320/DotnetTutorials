@@ -10,7 +10,7 @@ public sealed class RegisterUser(IUserRepository userRepository, IPasswordHasher
 
         if (isEmailAlreadyExist)
         {
-            
+            throw new Exception("This Email is already in use");
         }
 
         // creating a user
