@@ -1,4 +1,4 @@
-namespace VerticalSlice.Api.Products.Data;
+namespace VerticalSlice.Api.Products.Entity;
 
 public class Product
 {

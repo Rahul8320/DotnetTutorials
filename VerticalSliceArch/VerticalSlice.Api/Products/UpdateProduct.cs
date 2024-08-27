@@ -1,7 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
+using VerticalSlice.Api.Data;
 using VerticalSlice.Api.Endpoints;
-using VerticalSlice.Api.Products.Data;
 using VerticalSlice.Api.Products.Models;
 
 namespace VerticalSlice.Api.Products;

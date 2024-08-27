@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
+using VerticalSlice.Api.Data;
 using VerticalSlice.Api.Endpoints;
-using VerticalSlice.Api.Products.Data;
 
 namespace VerticalSlice.Api.Products;
 

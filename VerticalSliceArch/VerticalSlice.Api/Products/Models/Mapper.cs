@@ -1,5 +1,5 @@
 using FluentValidation.Results;
-using VerticalSlice.Api.Products.Data;
+using VerticalSlice.Api.Products.Entity;
 
 namespace VerticalSlice.Api.Products.Models;
 
