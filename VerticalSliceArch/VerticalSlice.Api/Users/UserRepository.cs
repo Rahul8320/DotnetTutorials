@@ -10,6 +10,11 @@ public sealed class UserRepository(AppDbContext context) : IUserRepository
         return await context.Users.AnyAsync(u => u.Email == email);
     }
 
+    public async Task<User?> GetByEmail(string email)
+    {
+        return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+    }
+
     public async Task InsertAsync(User user, CancellationToken cancellationToken)
     {
         context.Users.Add(user);

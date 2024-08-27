@@ -8,7 +8,9 @@ public static class ApiExtension
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+
         services.AddScoped<RegisterUser>();
+        services.AddScoped<LoginUser>();
 
         return services;
     }

@@ -11,5 +11,10 @@ public sealed class UserEndpoints : IEndpoint
             RegisterUser useCase,
             CancellationToken cancellationToken)
         => await useCase.Handle(request, cancellationToken)).WithTags("Users");
+
+        app.MapPost("login", async (
+            LoginUser.Request request,
+            LoginUser useCase)
+        => await useCase.Handle(request)).WithTags("Users");
     }
 }
