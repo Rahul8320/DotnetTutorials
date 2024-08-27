@@ -2,7 +2,7 @@ using FluentAssertions;
 using NSubstitute;
 using VerticalSlice.Api.Users;
 
-namespace VerticalSlice.UnitTest;
+namespace VerticalSlice.UnitTest.UsersTests;
 
 public class RegisterUserTests
 {

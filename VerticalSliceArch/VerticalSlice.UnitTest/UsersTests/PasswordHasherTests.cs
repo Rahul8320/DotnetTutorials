@@ -1,7 +1,7 @@
 using FluentAssertions;
 using VerticalSlice.Api.Users;
 
-namespace VerticalSlice.UnitTest;
+namespace VerticalSlice.UnitTest.UsersTests;
 
 public class PasswordHasherTests
 {

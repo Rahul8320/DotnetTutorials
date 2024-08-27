@@ -3,7 +3,7 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using VerticalSlice.Api.Users;
 
-namespace VerticalSlice.UnitTest;
+namespace VerticalSlice.UnitTest.UsersTests;
 
 public class LoginUserTests
 {
