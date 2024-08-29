@@ -2,7 +2,7 @@ namespace VerticalSlice.Api.Users;
 
 public sealed class LoginUser(IUserRepository userRepository, IPasswordHasher passwordHasher)
 {
-    public record Request(string Email, string Password);
+    public sealed record Request(string Email, string Password);
 
     public async Task<User> Handle(Request request)
     {
