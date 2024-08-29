@@ -5,7 +5,7 @@ namespace VerticalSlice.Api.Users;
 
 public sealed class UserRepository(AppDbContext context) : IUserRepository
 {
-    public async Task<bool> CheckEmailExistsAsync(string email, CancellationToken cancellationToken)
+    public async Task<bool> CheckEmailExistsAsync(string email, CancellationToken cancellationToken = default)
     {
         return await context.Users.AnyAsync(u => u.Email == email, cancellationToken);
     }

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VerticalSlice.Api", "Vertic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VerticalSlice.UnitTest", "VerticalSlice.UnitTest\VerticalSlice.UnitTest.csproj", "{ADE9E795-F546-42D4-B7F8-4BE1B7DFB181}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VerticalSlice.IntegrationTests", "VerticalSlice.IntegrationTests\VerticalSlice.IntegrationTests.csproj", "{AD64F1B9-6114-47B4-B6BD-14F0F7BE9528}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{ADE9E795-F546-42D4-B7F8-4BE1B7DFB181}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADE9E795-F546-42D4-B7F8-4BE1B7DFB181}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADE9E795-F546-42D4-B7F8-4BE1B7DFB181}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD64F1B9-6114-47B4-B6BD-14F0F7BE9528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD64F1B9-6114-47B4-B6BD-14F0F7BE9528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD64F1B9-6114-47B4-B6BD-14F0F7BE9528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD64F1B9-6114-47B4-B6BD-14F0F7BE9528}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
