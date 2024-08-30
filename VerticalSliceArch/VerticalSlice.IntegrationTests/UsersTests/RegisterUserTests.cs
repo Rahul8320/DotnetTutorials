@@ -92,8 +92,8 @@ public class RegisterUserTests : IClassFixture<TestFixture>
         await Task.WhenAll(tasks);
 
         // Assert
-        var users = await fixture.UserRepository.GetByEmail(email);
-        Assert.Single([users]);
+        var users = await fixture.Context.Users.ToListAsync();
+        Assert.Single(users);
     }
 
     private async Task RegisterUserAsync(RegisterUser.Request request)
