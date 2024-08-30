@@ -68,4 +68,45 @@ public class RegisterUserTests : IClassFixture<TestFixture>
         var users = await fixture.Context.Users.ToListAsync();
         Assert.Single(users);
     }
+
+    [Fact]
+    public async Task Handle_ShouldHandleRaceConditionCorrectly()
+    {
+        // Arrange
+        string firstName = "John";
+        string email = "test@example.com";
+        string lastName = "Doe";
+        string password = "password123";
+
+        await fixture.RemoveAllUsers();
+
+        var request = new RegisterUser.Request(firstName, lastName, email, password);
+
+        // Act
+        var tasks = new Task[2]
+        {
+            Task.Run(() => RegisterUserAsync(request)),
+            Task.Run(() => RegisterUserAsync( request))
+        };
+
+        await Task.WhenAll(tasks);
+
+        // Assert
+        var users = await fixture.UserRepository.GetByEmail(email);
+        Assert.Single([users]);
+    }
+
+    private async Task RegisterUserAsync(RegisterUser.Request request)
+    {
+        CancellationToken cancellationToken = new();
+
+        try
+        {
+            await registerUser.Handle(request, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            Assert.Equal("Please try again later.", ex.Message);
+        }
+    }
 }

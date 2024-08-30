@@ -2,30 +2,44 @@ namespace VerticalSlice.Api.Users;
 
 public sealed class RegisterUser(IUserRepository userRepository, IPasswordHasher passwordHasher)
 {
-    public record Request(string Email, string FirstName, string LastName, string Password);
+    public sealed record Request(string Email, string FirstName, string LastName, string Password);
+
+    private static readonly SemaphoreSlim semaphore = new(1, 1);
 
     public async Task<User> Handle(Request request, CancellationToken cancellationToken)
     {
-        bool isEmailAlreadyExist = await userRepository.CheckEmailExistsAsync(request.Email);
-
-        if (isEmailAlreadyExist)
+        if (await semaphore.WaitAsync(100, cancellationToken) == false)
         {
-            throw new Exception("This Email is already in use");
+            throw new Exception("Please try again later.");
         }
 
-        // creating a user
-        var user = new User
+        try
         {
-            Id = Guid.NewGuid(),
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Email = request.Email,
-            PasswordHash = passwordHasher.Hash(request.Password),
-        };
+            bool isEmailAlreadyExist = await userRepository.CheckEmailExistsAsync(request.Email, cancellationToken);
 
-        // store in db
-        await userRepository.InsertAsync(user, cancellationToken);
+            if (isEmailAlreadyExist)
+            {
+                throw new Exception("This Email is already in use");
+            }
 
-        return user;
+            // creating a user
+            var user = new User
+            {
+                Id = Guid.NewGuid(),
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Email = request.Email,
+                PasswordHash = passwordHasher.Hash(request.Password),
+            };
+
+            // store in db
+            await userRepository.InsertAsync(user, cancellationToken);
+
+            return user;
+        }
+        finally
+        {
+            semaphore.Release();
+        }
     }
 }
