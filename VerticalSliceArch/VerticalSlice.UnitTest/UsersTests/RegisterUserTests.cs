@@ -1,4 +1,5 @@
 using FluentAssertions;
+using FluentEmail.Core;
 using NSubstitute;
 using VerticalSlice.Api.Users;
 
@@ -8,11 +9,12 @@ public class RegisterUserTests
 {
     private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
     private readonly IPasswordHasher _passwordHasher = Substitute.For<IPasswordHasher>();
+    private readonly IFluentEmail _fluentEmail = Substitute.For<IFluentEmail>();
     private readonly RegisterUser _registerUser;
 
     public RegisterUserTests()
     {
-        _registerUser = new RegisterUser(_userRepository, _passwordHasher);
+        _registerUser = new RegisterUser(_userRepository, _passwordHasher, _fluentEmail);
     }
 
     [Fact]

@@ -19,6 +19,8 @@ builder.Services.AddEndpoints();
 
 builder.Services.ServiceExtension();
 
+builder.Services.AddEmailServerSetup(builder.Configuration);
+
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 var app = builder.Build();

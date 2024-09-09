@@ -1,6 +1,11 @@
+using FluentEmail.Core;
+
 namespace VerticalSlice.Api.Users;
 
-public sealed class RegisterUser(IUserRepository userRepository, IPasswordHasher passwordHasher)
+public sealed class RegisterUser(
+    IUserRepository userRepository,
+    IPasswordHasher passwordHasher,
+    IFluentEmail fluentEmail)
 {
     public sealed record Request(string Email, string FirstName, string LastName, string Password);
 
@@ -35,7 +40,18 @@ public sealed class RegisterUser(IUserRepository userRepository, IPasswordHasher
             // store in db
             await userRepository.InsertAsync(user, cancellationToken);
 
+            // Email verification
+            await fluentEmail
+                .To(user.Email)
+                .Subject("Email verification for Register Use Case")
+                .Body("To verify your email address, click here.")
+                .SendAsync();
+
             return user;
+        }
+        catch (Exception)
+        {
+            throw;
         }
         finally
         {
