@@ -1,5 +1,5 @@
 using FluentAssertions;
-using VerticalSlice.Api.Users;
+using VerticalSlice.Api.Users.Infrastructure;
 
 namespace VerticalSlice.UnitTest.UsersTests;
 

@@ -1,4 +1,5 @@
 using VerticalSlice.Api.Users;
+using VerticalSlice.Api.Users.Infrastructure;
 
 namespace VerticalSlice.Api;
 
@@ -11,6 +12,8 @@ public static class ApiExtension
 
         services.AddScoped<RegisterUser>();
         services.AddScoped<LoginUser>();
+
+        services.AddScoped<EmailVerificationLinkFactory>();
 
         return services;
     }

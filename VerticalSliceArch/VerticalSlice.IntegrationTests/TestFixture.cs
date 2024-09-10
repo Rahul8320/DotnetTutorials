@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using VerticalSlice.Api.Data;
-using VerticalSlice.Api.Users;
+using VerticalSlice.Api.Users.Infrastructure;
 
 namespace VerticalSlice.IntegrationTests;
 

@@ -17,6 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(
 
 builder.Services.AddEndpoints();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.ServiceExtension();
 
 builder.Services.AddEmailServerSetup(builder.Configuration);

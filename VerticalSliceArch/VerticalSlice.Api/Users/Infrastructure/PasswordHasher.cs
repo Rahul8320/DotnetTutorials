@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace VerticalSlice.Api.Users;
+namespace VerticalSlice.Api.Users.Infrastructure;
 
 public sealed class PasswordHasher : IPasswordHasher
 {
@@ -28,4 +28,10 @@ public sealed class PasswordHasher : IPasswordHasher
 
         return CryptographicOperations.FixedTimeEquals(hash, inputHash);
     }
+}
+
+public interface IPasswordHasher
+{
+    string Hash(string password);
+    bool Verify(string password, string passwordHash);
 }

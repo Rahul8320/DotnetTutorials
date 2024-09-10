@@ -2,6 +2,7 @@ using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using VerticalSlice.Api.Users;
+using VerticalSlice.Api.Users.Infrastructure;
 
 namespace VerticalSlice.UnitTest.UsersTests;
 
@@ -38,7 +39,7 @@ public class LoginUserTests
         // Assert
         result.Should().BeEquivalentTo(user);
         await _userRepository.Received(1).GetByEmail(request.Email);
-        await _userRepository.DidNotReceive().InsertAsync(user, CancellationToken.None);
+        await _userRepository.DidNotReceive().CreateUserAndVerificationToken(user, CancellationToken.None);
         _passwordHasher.Received(1).Verify(request.Password, user.PasswordHash);
         _passwordHasher.Received(1).Hash(request.Password);
     }

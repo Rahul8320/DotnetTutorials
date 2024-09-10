@@ -1,4 +1,4 @@
-.vscode
+gr.vscode
 .vs
 
 */bin/
@@ -7,6 +7,6 @@
 */logs/
 */*.db
 */*.db-shm
-*/*.db-wal
+*/*.db-wal 
 AzFuncUnitTestWithEf/__azurite_db_blob__.json
 AzFuncUnitTestWithEf/__azurite_db_blob_extent__.json

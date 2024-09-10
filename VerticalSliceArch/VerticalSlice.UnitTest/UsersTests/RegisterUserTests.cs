@@ -2,6 +2,7 @@ using FluentAssertions;
 using FluentEmail.Core;
 using NSubstitute;
 using VerticalSlice.Api.Users;
+using VerticalSlice.Api.Users.Infrastructure;
 
 namespace VerticalSlice.UnitTest.UsersTests;
 
@@ -9,12 +10,11 @@ public class RegisterUserTests
 {
     private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
     private readonly IPasswordHasher _passwordHasher = Substitute.For<IPasswordHasher>();
-    private readonly IFluentEmail _fluentEmail = Substitute.For<IFluentEmail>();
     private readonly RegisterUser _registerUser;
 
     public RegisterUserTests()
     {
-        _registerUser = new RegisterUser(_userRepository, _passwordHasher, _fluentEmail);
+        _registerUser = new RegisterUser(_userRepository, _passwordHasher);
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class RegisterUserTests
         await response.Should().ThrowAsync<Exception>()
             .WithMessage("This Email is already in use");
 
-        await _userRepository.DidNotReceive().InsertAsync(Arg.Any<User>(), CancellationToken.None);
+        await _userRepository.DidNotReceive().CreateUserAndVerificationToken(Arg.Any<User>(), CancellationToken.None);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class RegisterUserTests
         user.Email.Should().Be(request.Email);
         user.PasswordHash.Should().Be("hashed_password");
 
-        await _userRepository.Received(1).InsertAsync(user, CancellationToken.None);
+        await _userRepository.Received(1).CreateUserAndVerificationToken(user, CancellationToken.None);
     }
 
     [Fact]
@@ -67,7 +67,7 @@ public class RegisterUserTests
         await _registerUser.Handle(request, CancellationToken.None);
 
         // Assert
-        await _userRepository.Received(1).InsertAsync(Arg.Is<User>(u =>
+        await _userRepository.Received(1).CreateUserAndVerificationToken(Arg.Is<User>(u =>
             u.FirstName == request.FirstName &&
             u.LastName == request.LastName &&
             u.Email == request.Email &&

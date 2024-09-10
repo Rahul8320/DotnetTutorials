@@ -1,3 +1,5 @@
+using VerticalSlice.Api.Users.Infrastructure;
+
 namespace VerticalSlice.Api.Users;
 
 public sealed class LoginUser(IUserRepository userRepository, IPasswordHasher passwordHasher)

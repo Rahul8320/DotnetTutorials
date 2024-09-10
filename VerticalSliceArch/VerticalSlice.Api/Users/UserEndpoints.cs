@@ -2,19 +2,27 @@ using VerticalSlice.Api.Endpoints;
 
 namespace VerticalSlice.Api.Users;
 
-public sealed class UserEndpoints : IEndpoint
+internal sealed class UserEndpoints : IEndpoint
 {
+    private const string Tag = "Users";
+    public const string VerifyEmail = "VerifyEmail";
+
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("register", async (
+        app.MapPost("users/register", async (
             RegisterUser.Request request,
             RegisterUser useCase,
             CancellationToken cancellationToken)
-        => await useCase.Handle(request, cancellationToken)).WithTags("Users");
+        => await useCase.Handle(request, cancellationToken)).WithTags(Tag);
 
-        app.MapPost("login", async (
+        app.MapPost("users/login", async (
             LoginUser.Request request,
             LoginUser useCase)
-        => await useCase.Handle(request)).WithTags("Users");
+        => await useCase.Handle(request)).WithTags(Tag);
+
+        app.MapGet("users/verify-email", (Guid token) =>
+        {
+
+        }).WithTags(Tag).WithName(VerifyEmail);
     }
 }
