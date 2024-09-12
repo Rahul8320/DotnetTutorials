@@ -12,6 +12,7 @@ public static class ApiExtension
 
         services.AddScoped<RegisterUser>();
         services.AddScoped<LoginUser>();
+        services.AddScoped<VerifyEmail>();
 
         services.AddScoped<EmailVerificationLinkFactory>();
 

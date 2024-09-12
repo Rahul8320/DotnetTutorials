@@ -13,16 +13,14 @@ internal sealed class UserEndpoints : IEndpoint
             RegisterUser.Request request,
             RegisterUser useCase,
             CancellationToken cancellationToken)
-        => await useCase.Handle(request, cancellationToken)).WithTags(Tag);
+            => await useCase.Handle(request, cancellationToken)).WithTags(Tag);
 
         app.MapPost("users/login", async (
             LoginUser.Request request,
             LoginUser useCase)
-        => await useCase.Handle(request)).WithTags(Tag);
+            => await useCase.Handle(request)).WithTags(Tag);
 
-        app.MapGet("users/verify-email", (Guid token) =>
-        {
-
-        }).WithTags(Tag).WithName(VerifyEmail);
+        app.MapGet("users/verify-email", async (Guid tokenId, VerifyEmail useCase)
+            => await useCase.Handle(tokenId)).WithTags(Tag).WithName(VerifyEmail);
     }
 }
